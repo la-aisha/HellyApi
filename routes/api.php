@@ -30,4 +30,11 @@ Route::middleware(['auth', 'role::admin'])->group(function () {
     
 });
 Route::post('/login',[LoginController::class ,'login']);
-Route::post('/register',[RegisterController::class ,'register']);
+/*     Route::post('/register',[RegisterController::class ,'register']);
+Route::post('/otp',[RegisterController::class ,'otp']);
+Route::post('/verifyotp',[RegisterController::class ,'verifyotp']); */
+Route::middleware('api')->post('/register', [RegisterController::class, 'register']);
+Route::middleware('api')->post('/verifiedOtp', [RegisterController::class, 'verifiedOtp']);
+Route::get('/verification/{id}',[RegisterController::class,'verification']);
+
+

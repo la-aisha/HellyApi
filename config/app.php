@@ -163,11 +163,20 @@ return [
         /*
          * Application Service Providers...
          */
+       // OwenIt\OTP\OTPServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Ichtrojan\Otp\OtpServiceProvider::class,
+        Illuminate\Mail\MailServiceProvider::class,
+
+
+
+
+
     ])->toArray(),
 
     /*
@@ -183,6 +192,10 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Otp' => Ichtrojan\Otp\Otp::class,
+        'Mail' => Illuminate\Support\Facades\Mail::class,
+
+
     ])->toArray(),
 
 ];

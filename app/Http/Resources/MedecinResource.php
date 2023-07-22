@@ -19,6 +19,8 @@ class MedecinResource extends JsonResource
             'firstname'=>$this->firstname ,
             'lastname'=>$this->lastname ,
             'ddn'=>$this->ddn ,
+            'email'=>$this->email ,
+
 
             'speciality_id'=> $this->id ,
             'hopital_id'=>$this->hopital_id ,

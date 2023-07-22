@@ -33,6 +33,8 @@ class MedecinController extends Controller
         ]);
         
         return new MedecinResource($medecin);
+
+        
        // $res= $user->hopital_id ;
        // return $res ;
 

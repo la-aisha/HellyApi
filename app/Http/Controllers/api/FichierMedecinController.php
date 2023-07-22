@@ -11,8 +11,6 @@ use App\Http\Resources\FichierMedecinResource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile; // Import UploadedFile class
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
-
 
 class FichierMedecinController extends Controller
 {
@@ -30,9 +28,7 @@ class FichierMedecinController extends Controller
         $fileNameWithUniqueId = $uniqueId . '_' . $originalFileName;
 
         // Store the file with the modified filename in the 'documents' disk
-        $path = $file->storeAs('documents', $fileNameWithUniqueId, 'public');
-        //Storage::disk('documents')->put($fileNameWithUniqueId, file_get_contents($file));
-
+        $path = $file->storeAs('documents', $fileNameWithUniqueId, 'documents');
 
         $fichierMedecin = FichierMedecin::create([
             'file_name' => $originalFileName,
@@ -42,10 +38,8 @@ class FichierMedecinController extends Controller
         ]);
 
         $medecin->fichiers()->save($fichierMedecin);
-        $med =new FichierMedecinResource($fichierMedecin);
-        dd($file);
-        //Log::debug($file); // Check the logs in storage/logs/laravel.log
+        
 
-
+        return new FichierMedecinResource($fichierMedecin);
     }
 }

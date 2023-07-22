@@ -16,10 +16,12 @@ use Illuminate\Database\Eloquent\Relations\Hasmany;
 class Medecin extends Model
 {
     use HasFactory;
-    protected $fillable = array('firstname','lastname','address','number','ddn','status','user_id','speciality_id','hopital_id');
+    protected $fillable = array('firstname','lastname','email','address','number','ddn','status','user_id','speciality_id','hopital_id');
     public static $rules = array('firstname'=>'required|min:3',
     'lastname'=>'required|min:3',
     'number'=>'required|min:9',
+    'email'=>'required|min:25',
+
     'address'=>'required|min:9',
     'ddn'=>'required|min:3',
     'status'=>'required|min:1',

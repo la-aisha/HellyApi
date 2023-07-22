@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('address');
 
+            $table->boolean('is_activated')->default(0);
+
+
+            $table->string('email');
 
             $table->string('number');
             $table->string('ddn');

@@ -19,9 +19,7 @@ class UserResource extends JsonResource
             'firstname'=>$this->firstname ,
             'lastname'=>$this->lastname ,
             'ddn'=>$this->ddn ,
-
-
-
+            'hopital_id'=>$this->hopital_id ,
 
             'email'=>$this->email ,
             'token'=>$this->createToken("token")->plainTextToken ,

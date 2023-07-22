@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('number');
             $table->string('ddn');
             $table->string('address');
+            $table->boolean('is_activated')->default(0);
+
 
 
             $table->string('email')->unique();
