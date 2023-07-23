@@ -23,6 +23,7 @@ class FichierMedecinController extends Controller
     
         // Get the original filename
         $originalFileName = $file->getClientOriginalName();
+        
 
         // Prepend the unique ID to the filename
         $fileNameWithUniqueId = $uniqueId . '_' . $originalFileName;
@@ -36,6 +37,8 @@ class FichierMedecinController extends Controller
             'medecin_id' => $medecinId,
             'created_at' => now(),
         ]);
+
+        //STOCK FILE OF MEDECIN
 
         $medecin->fichiers()->save($fichierMedecin);
         

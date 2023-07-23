@@ -30,9 +30,7 @@ use Illuminate\Support\Str;
 use App\Mail\WelcomeMail;
 use App\Models\VerifyToken;
 
-
 use Illuminate\Support\Carbon;
-
 
 use Mail;
 
@@ -98,35 +96,33 @@ class RegisterController extends Controller
          return response()->json([
         'message' => 'user created',
         'data' => $user->medecin,
-        'status' => 201,
-    ]);
+    ],201);
     }
 
     public function verifiedOtp(Request $request)
     {
-        $user = User::where('email',$request->email)->first();
+
         $otpData = VerifyToken::where('token',$request->otp)->first();
+        $email = $otpData->email ;
+        $user = User::where('email',$email)->first();
         if(!$otpData){
-            return response()->json(['success' => false,'msg'=> 'You entered wrong OTP']);
+            return response()->json(['success' => false,'msg'=> 'You entered wrong OTP'],422);
         }
         else{
 
-            $currentTime = Carbon::now(); // Get the current time using Carbon
-
-            // Get the time when the OTP was created from the $otpData object
+            $currentTime = Carbon::now();
             $time = $otpData->created_at;
-
-            // Perform the time comparison using Carbon methods
             $timeDifference = $currentTime->diffInSeconds($time);
-            $otpExpiryTime = 3600; // 90 seconds + 5 seconds buffer
+            $otpExpiryTime = 5000; 
 
             if ($timeDifference <= $otpExpiryTime) {
-                User::where('id', $user->id)->update([
+               User::where('id', $user->id)->update([
                     'is_activated' => 1
-                ]);
-                return response()->json(['success' => true, 'msg' => 'Mail has been verified']);
+                ]); 
+                //dd($user);
+                return response()->json(['success' => true, 'msg' => 'Mail has been verified' ,'data' =>$user],200);
             } else {
-                return response()->json(['success' => false, 'msg' => 'Your OTP has been Expired']);
+                return response()->json(['success' => false, 'msg' => 'Your OTP has been Expired'],422);
             }
 
         }
@@ -134,21 +130,34 @@ class RegisterController extends Controller
 
     public function resendOtp(Request $request)
     {
-        $user = User::where('email',$request->email)->first();
-        $otpData = VerifyToken::where('email',$request->email)->first();
+       // $email = VerifyToken::where('token', $request->email)->first();
+
+        $user = User::where('email', $request->email)->first();
+
+       // $newOtp=$this->sendOtp($user);
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'User not found.'], 404);
+        }
+
+        $otpData = VerifyToken::where('email', $request->email)->first();
+
+        if (!$otpData) {
+            return response()->json(['success' => false, 'message' => 'OTP data not found.'], 404);
+        }
 
         $currentTime = time();
-        $time = $otpData->created_at;
+        $otpCreatedTime = strtotime($otpData->created_at);
 
-        if($currentTime >= $time && $time >= $currentTime - (90+5)){//90 seconds
-            return response()->json(['success' => false,'msg'=> 'Please try after some time']);
+        // Allow resending OTP after 90 seconds, adjust this as needed
+        if ($currentTime >= $otpCreatedTime && $otpCreatedTime >= $currentTime - 90) {
+            return response()->json(['success' => false, 'message' => 'Please try again later.'], 400);
+        } else {
+            // Send OTP to the user's email
+            $this->sendOtp($user);
+            return response()->json(['success' => true, 'message' => 'OTP has been sent again.']);
         }
-        else{
-
-            $this->sendOtp($user);//OTP SEND
-            return response()->json(['success' => true,'msg'=> 'OTP has been sent']);
-        }
-
+      
     }
        
 
