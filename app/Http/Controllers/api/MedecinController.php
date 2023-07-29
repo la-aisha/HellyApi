@@ -26,6 +26,8 @@ class MedecinController extends Controller
         'speciality_id'=>$specialite,
         'hopital_id'=>$hopital, 
         'user_id'=>$user->id,
+        'created_at' => now(),
+
         ]);
         
         return new MedecinResource($medecin);

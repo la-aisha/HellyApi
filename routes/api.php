@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\{LoginController,RegisterController};
+use App\Http\Controllers\Api\{LoginController,RegisterController,UserController,AllergiesController};
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +40,8 @@ Route::middleware('api')->post('/resendOtp', [RegisterController::class, 'resend
 Route::get('/verification/{id}',[RegisterController::class,'verification']);
 
 
+Route::middleware('api')->get('/users/{id}',[RegisterController::class,'searchById']);
+Route::get('/allergies',[RegisterController::class,'verification']);
+
+Route::middleware('api')->get('/allergies',[AllergiesController::class,'getAllAllergies']);
+   

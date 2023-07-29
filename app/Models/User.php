@@ -9,10 +9,14 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+
+
 use App\Models\Medecin;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,7 +25,31 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $table = "users";
+    protected $primaryKey = 'id';
+
+
+
+    public static $rules = array('firstname'=>'required|min:3',
+    'lastname'=>'required|min:3',
+    'number'=>'required|min:9',
+    'email'=>'required|min:25',
+
+    'address'=>'required|min:9',
+    'ddn'=>'required|min:3',
+    'status'=>'required|min:1',
+    'user_id'=>'required|integer:1',
+    'speciality_id'=>'required|integer:1',
+    'hopital_id'=>'required|integer:1'
+
+    
+
+
+);
+
     protected $fillable = [
+        'id',
         'firstname',
         'lastname',
         'status',
@@ -34,6 +62,25 @@ class User extends Authenticatable
 
 
     ];
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+     /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.

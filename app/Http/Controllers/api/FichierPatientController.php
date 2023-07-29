@@ -5,18 +5,21 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Medecin;
-use App\Models\FichierMedecin;
-use App\Http\Resources\FichierMedecinResource;
+
+use App\Models\Patient;
+use App\Models\FichierPatient;
+use App\Http\Resources\FichierPatientResource;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile; // Import UploadedFile class
 use Illuminate\Support\Str;
 
-class FichierMedecinController extends Controller
+
+class FichierPatientController extends Controller
 {
-    public function createFichier(UploadedFile $file, int $medecinId)
+    public function createFichier(UploadedFile $file, int $patientId)
     {
-        $medecin = Medecin::findOrFail($medecinId);
+        $patient = Patient::findOrFail($patientId);
 
         // Generate a unique ID
         $uniqueId = Str::uuid()->toString();
@@ -29,20 +32,20 @@ class FichierMedecinController extends Controller
         $fileNameWithUniqueId = $uniqueId . '_' . $originalFileName;
 
         // Store the file with the modified filename in the 'documents' disk
-        $path = $file->storeAs('documentsMedecin', $fileNameWithUniqueId, 'documents');
+        $path = $file->storeAs('documentsPatient', $fileNameWithUniqueId, 'documents');
 
-        $fichierMedecin = FichierMedecin::create([
+        $fichierPatient = FichierPatient::create([
             'file_name' => $originalFileName,
             'file_path' => $path,
-            'medecin_id' => $medecinId,
+            'patient_id' => $patientId,
             'created_at' => now(),
         ]);
 
-        //STOCK FILE OF MEDECIN
+        //STOCK FILE OF patient
 
-        $medecin->fichiers()->save($fichierMedecin);
+        $patient->fichiers()->save($fichierPatient);
         
 
-        return new FichierMedecinResource($fichierMedecin);
+        return new FichierPatientResource($fichierPatient);
     }
 }

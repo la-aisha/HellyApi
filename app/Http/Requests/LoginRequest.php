@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 
+
+
 /*  */
 
 class LoginRequest extends FormRequest
@@ -25,14 +27,20 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lastname'=>'required|min:',
-            'firstname'=>'required|min:3',
-            'number'=>'required|min:9',
-            'ddn'=>'required|min:3',
-            'status'=>'required|min:1',
-            'user_id'=>'required|integer:1',
-            'speciality_id'=>'required|integer:1',
-            'role_id'=>'required|integer:1'
+            'email' =>' required|email|exists:users,email',
+            'password'=>'required'
         ];
+    }
+
+    public function failedValidation (Validator $validator){
+        throw new HttpResponseException(
+            response()->json([
+                'success' => 'False',
+                'message' => 'Validation error',
+                'data' => $validator->errors()->all()
+                ,
+
+            ], 422)
+        );
     }
 }

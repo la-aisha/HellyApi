@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('address');
-            $table->boolean('is_activated')->default(0);
+            $table->boolean('is_activated')->default(1);
+            $table->string('email');
+
 
 
             
@@ -24,6 +26,10 @@ return new class extends Migration
 
             $table->string('number');
             $table->string('ddn');
+            
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             
 
 

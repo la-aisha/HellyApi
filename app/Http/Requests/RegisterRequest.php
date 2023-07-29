@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /* -------- */
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException ;
+use Illuminate\Support\Facades\Hash;
+
 
 class RegisterRequest extends FormRequest
 {
@@ -29,6 +31,8 @@ class RegisterRequest extends FormRequest
         'firstaname'=>'required|min:3',
         'number'=>'required|min:9',
         'address'=>'required|min:9',
+        'email'=>'required|min:9',
+
 
         'ddn'=>'required|min:3',
         'speciality_id'=>'required|integer:1',

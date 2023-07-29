@@ -11,20 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('patient_allergy', function (Blueprint $table) {
+        Schema::create('fichier_patients', function (Blueprint $table) {
             $table->id();
-            $table->string('firtsname');
-            $table->string('lastname');
-
-            $table->string('number');
-            $table->string('ddn');
-           
-            $table->unsignedBigInteger('patient_id');
-            $table->unsignedBigInteger('allergy_id');
             $table->timestamps();
-        
+            $table->string('file_name');
+            $table->string('file_path');
+
+
+            $table->unsignedBigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('patients');
-            $table->foreign('allergy_id')->references('id')->on('allergies');
         });
     }
 
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('patient_allergy');
+        Schema::dropIfExists('fichier_patients');
     }
 };
